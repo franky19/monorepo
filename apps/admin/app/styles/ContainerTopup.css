@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'Trueno';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Trueno Light'), url('./fonts/TruenoLt.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Trueno';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Trueno Regular'), url('./fonts/TruenoRg.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Trueno';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Trueno SemiBold'), url('./fonts/TruenoSBd.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Trueno';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Trueno Bold'), url('./fonts/TruenoBd.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Trueno';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Trueno Bold'), url('./fonts/TruenoExBd.woff') format('woff');
+}
+
+.container {
+    max-width: 100%;
+}
+
+.btn-primary-disabled {
+    padding: 12px 16px;
+    font-family: Trueno;
+    font-size: 14;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0.37px;
+    text-align: center;
+    color: #ffffff;
+    /* background-color: #ff6792 !important; */
+    border-radius: 0px;
+    border: none;
+    border-top-color: currentcolor;
+    border-right-color: currentcolor;
+    border-bottom-color: currentcolor;
+    border-left-color: currentcolor;
+}
+.btn-primary {
+    padding: 12px 16px;
+    font-family: Trueno;
+    font-size: 14;
+    font-weight: 600;
+    color: #ffffff;
+    /* background-color: #ff1659 !important; */
+    border-radius: 0px;
+}
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1280px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1024px;
+    }
+}
