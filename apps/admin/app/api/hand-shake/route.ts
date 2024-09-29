@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import URL from '../config';
 import axios, {AxiosResponse} from 'axios';
-import {handshakeBody, handShakeResponseData} from '@/slices/voucherTopupSlice';
+import {handshakeBody, handShakeResponseData} from '@/slices/adminSlice';
 import {IS_USING_PRODUCTION} from '@/config/devconfig';
 import {cookies} from 'next/headers';
 

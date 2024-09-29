@@ -4,7 +4,7 @@
 // import {
 //   topupBody,
 //   topupResponseDataAPIResult,
-// } from '@/slices/voucherTopupSlice';
+// } from '@/slices/adminPanelSlice';
 // import {IS_USING_PRODUCTION} from '@/config/devconfig';
 
 // export async function POST(request: NextRequest) {
@@ -91,7 +91,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import URL, {IS_MOCK} from '../config';
 import {IS_USING_PRODUCTION} from '@/config/devconfig';
-import {topupResponseDataAPIResult} from '@/slices/voucherTopupSlice';
+import {topupResponseDataAPIResult} from '@/slices/adminSlice';
 import axios, {AxiosResponse} from 'axios';
 import {topupMock} from './mock';
 

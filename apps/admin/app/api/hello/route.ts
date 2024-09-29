@@ -3,7 +3,7 @@ import {NextResponse} from 'next/server';
 import {cookies} from 'next/headers';
 import URL, {IS_MOCK} from '../config';
 import {helloMockResponse} from './mock';
-import {HelloResponse} from '../../../store/slices/voucherTopupSlice';
+import {HelloResponse} from '../../../store/slices/adminSlice';
 import {IS_USING_PRODUCTION} from '../../config/devconfig';
 
 export async function POST() {
