@@ -29,9 +29,7 @@
     "sass": "^1.68.0",
     "schema-dts": "^1.1.2",
     "schema-dts-gen": "^1.1.2",
-    "smartfren-ui": "*",
-    "styled-components": "^6.0.8",
-    "ui": "*"
+    "styled-components": "^6.0.8"
   },
   "devDependencies": {
     "@types/react": "18.2.37",
