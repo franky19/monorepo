@@ -5,10 +5,10 @@ import {persistStore, persistReducer} from 'redux-persist';
 // import storage from 'redux-persist/lib/storage';
 import storage from './customStorage';
 import {configReducer} from './slices/configSlice';
-import { voucherTopupReducer } from './slices/voucherTopupSlice';
+import {adminPanelReducer} from './slices/adminSlice';
 
-const voucherTopupPersistConfig = {
-  key: 'voucherTopup',
+const adminPanelPersistConfig = {
+  key: 'adminPanel',
   storage,
   blacklist: ['token'],
 };
@@ -20,7 +20,7 @@ const configPersistConfig = {
 };
 
 const rootReducer = combineReducers({
-  voucherTopup: persistReducer(voucherTopupPersistConfig, voucherTopupReducer),
+  adminPanel: persistReducer(adminPanelPersistConfig, adminPanelReducer),
   config: persistReducer(configPersistConfig, configReducer),
 });
 

@@ -7,18 +7,12 @@ module.exports = {
     IS_SWITCHABLE_ENV: process?.env?.['IS_SWITCHABLE_ENV'],
     BASE_PATH: process?.env?.['BASE_PATH'] ?? '',
   },
-  basePath: '/voucher-topup',
+  basePath: '/admin',
   reactStrictMode: false,
   transpilePackages: ['ui', 'payment-component'],
   images: {
     domains: [
-      'custinfo.smartfren.com',
-      'api.midtrans.com',
-      'api.sandbox.midtrans.com',
-      'ucms-api.smartfren.com',
-      'upload.wikimedia.org',
-      'ucms-api-stg.smartfren.com',
-      'www.smartfren.com'
+     'images.unsplash.com'
     ],
     remotePatterns: [
       {

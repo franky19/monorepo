@@ -5,7 +5,7 @@ import {
   voucherCodeBody,
   voucherCodeResponseData,
   voucherCodeResponseResult,
-} from '@/slices/voucherTopupSlice';
+} from '@/slices/adminSlice';
 import {IS_USING_PRODUCTION} from '@/config/devconfig';
 
 export async function POST(request: NextRequest) {

@@ -1,6 +1,7 @@
 {
-  "extends": "tailwind-config/nextjs.json",
+  "extends": "../../packages/tsconfig/nextjs.json",
   "compilerOptions": {
+    "jsx": "preserve",
     "target": "esnext", // Specify ECMAScript target version
     "module": "esnext", // Specify module code generation
     "moduleResolution": "node", // Change this to 'node'
@@ -11,17 +12,42 @@
     "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["app/components/*"],
-      "@/assets/*": ["public/assets/*"],
-      "@/helpers/*": ["app/helpers/*"],
-      "@/*": ["store/*"],
-      "@/api/*": ["app/api/*"],
-      "@/hooks/*": ["app/hooks/*"],
-      "@/contexts/*": ["app/contexts/*"],
-      "@/config/*": ["app/config/*"],
-      "@/kontak-informasi/*": ["app/kontak-informasi/*"]
+      "@/components/*": [
+        "app/components/*"
+      ],
+      "@/assets/*": [
+        "public/assets/*"
+      ],
+      "@/helpers/*": [
+        "app/helpers/*"
+      ],
+      "@/*": [
+        "store/*"
+      ],
+      "@/api/*": [
+        "app/api/*"
+      ],
+      "@/hooks/*": [
+        "app/hooks/*"
+      ],
+      "@/contexts/*": [
+        "app/contexts/*"
+      ],
+      "@/config/*": [
+        "app/config/*"
+      ],
+      "@/kontak-informasi/*": [
+        "app/kontak-informasi/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

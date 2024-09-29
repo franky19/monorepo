@@ -2,9 +2,9 @@
 'use client';
 import React from 'react';
 import withRedux from '@/helpers/withRedux';
-import LoginComponent from './components/Login/Login';
-import {getCookie} from './helpers/getToken';
-import AdminContainer from './components/AdminContainer/AdminContainer';
+import AdminContainer from '@/components/AdminContainer/AdminContainer';
+import LoginComponent from '@/components/Login/Login';
+import { getCookie } from '@/helpers/getToken';
 
 function Page() {
   const token = getCookie('token');
