@@ -1,0 +1,4 @@
+What's New in v1.10.0
+
+1. [DOBR][ITP-6257]
+Setup staging toggle

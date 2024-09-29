@@ -1,0 +1,62 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@font-face {
+  font-family: 'TruenoUlt';
+  font-style: normal;
+  font-weight: 200;
+  src: local('Trueno Ultra Light'), url('../../public/fonts/TruenoUltLt.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TruenoLt';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Trueno Light'), url('../../public/fonts/TruenoLt.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TruenoRg';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Trueno Regular'), url('../../public/fonts/TruenoRg.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TruenoBd';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Trueno SemiBold'), url('../../public/fonts/TruenoSBd.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TruenoSBd';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Trueno Bold'), url('../../public/fonts/TruenoBd.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TruenoSSBd';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Trueno Bold'), url('../../public/fonts/TruenoExBd.otf') format('opentype');
+}
+
+:root {
+  --foreground: #000;
+  --background: #fff;
+}
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+.modal--country  .children-wrapper{
+  padding: 0px!important;
+}
+
+.modal--country .card-modal > div > div > div {
+  max-height: 450px;
+}
