@@ -1,0 +1,50 @@
+{
+  "extends": "tsconfig/nextjs.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": [
+        "app/components/*"
+      ],
+      "@/assets/*": [
+        "public/assets/*"
+      ],
+      "@/helpers/*": [
+        "app/helpers/*"
+      ],
+      "@/*": [
+        "store/*"
+      ],
+      "@/api/*": [
+        "app/api/*"
+      ],
+      "@/hooks/*": [
+        "app/hooks/*"
+      ],
+      "@/contexts/*": [
+        "app/contexts/*"
+      ],
+      "@/config/*": [
+        "app/config/*"
+      ],
+      "@/kontak-informasi/*": [
+        "app/kontak-informasi/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,152 @@
+stages:
+  - build_image
+  - deploy_manifest
+  - deploy_stg
+  - deploy_prod
+
+variables:
+  GIT_SSL_NO_VERIFY: 'true'
+
+build_image:
+  image: docker:18.09.7-dind-git
+  stage: build_image
+  tags:
+    - docker-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+  services:
+    - name: docker:18.09.7-dind
+  script:
+    - BASE_URL=`echo $CI_REPOSITORY_URL | sed "s;\/*$CI_PROJECT_PATH.*;;"`
+    - REPO_URL="$BASE_URL/devops/docker/docker-registry-prod.git"
+    - rm -fr registry; git clone $REPO_URL registry
+    - DOCKER_REGISTRY=$(cat registry/DOCKER_REGISTRY_DNS)
+    - export IMGVER=$(echo $CI_BUILD_REF_NAME |  sed 's/\//_/g' )
+    - cat registry/password  | docker login -u $(cat registry/user)  --password-stdin ${DOCKER_REGISTRY}
+    - docker build -t "${DOCKER_REGISTRY}/touchpoint/microsite-topup:$IMGVER" -f apps/topup/Dockerfile .
+    - docker push "${DOCKER_REGISTRY}/touchpoint/microsite-topup:$IMGVER"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+      changes:
+        - apps/topup/**/*
+      when: always
+      allow_failure: false
+
+deploy_stg:
+  stage: deploy_stg
+  environment: Staging
+  tags:
+    - docker-dind
+  image:
+    name: devops-registry.smartfren.com/devops/kubectl:1.27.4
+    entrypoint: ['']
+  script:
+    - BASE_URL=`echo $CI_REPOSITORY_URL | sed "s;\/*$CI_PROJECT_PATH.*;;"`
+    - REPO_URL="$BASE_URL/it-dssm/k8s/kubeconfig/project-dev-test-stg.git"
+    - git clone $REPO_URL kubeconfig
+    - mv kubeconfig/config-sf-ucms-stg ~/.kube/config
+    - export IMGVER=$(echo $CI_BUILD_REF_NAME |  sed 's/\//_/g' )
+    - KUBE_URL="$BASE_URL/it-dssm/service-configs/kubernetes/touchpoint/microsite-topup.git"
+    - git clone --branch staging $KUBE_URL kube-stg
+    - kubectl apply -f kube-stg/s-microsite-topup-deployment.yml -n sf-ucms-revamp-stg
+    - kubectl rollout restart deployments s-microsite-topup -n sf-ucms-revamp-stg
+    - kubectl get pod -o wide -n sf-ucms-revamp-stg
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+      changes:
+        - apps/topup/**/*
+      when: always
+
+deploy_stg_manifest:
+  stage: deploy_manifest
+  environment: Manifest
+  tags:
+    - docker-dind
+  image:
+    name: devops-registry.smartfren.com/devops/kubectl:1.27.4
+    entrypoint: ['']
+  script:
+    - BASE_URL=`echo $CI_REPOSITORY_URL | sed "s;\/*$CI_PROJECT_PATH.*;;"`
+    - REPO_URL="$BASE_URL/it-dssm/k8s/kubeconfig/project-dev-test-stg.git"
+    - git clone $REPO_URL kubeconfig
+    - mv kubeconfig/config-sf-ucms-stg ~/.kube/config
+    - export IMGVER=$(echo $CI_BUILD_REF_NAME |  sed 's/\//_/g' )
+    - KUBE_URL="$BASE_URL/it-dssm/service-configs/kubernetes/touchpoint/microsite-topup.git"
+    - git clone --branch staging $KUBE_URL kube-stg
+    - kubectl apply -f kube-stg -n sf-ucms-revamp-stg
+    - kubectl rollout restart deployments s-microsite-topup -n sf-ucms-revamp-stg
+  only:
+    - develop
+  when: manual
+
+#================================================ Prod Environment
+build_image_prod_topup:
+  image: docker:18.09.7-dind-git
+  stage: build_image
+  tags:
+    - docker-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+  services:
+    - name: docker:18.09.7-dind
+  script:
+    - echo $CI_PROJECT_DIR
+    - BASE_URL=`echo $CI_REPOSITORY_URL | sed "s;\/*$CI_PROJECT_PATH.*;;"`
+    - REPO_URL="$BASE_URL/devops/docker/docker-registry-prod.git"
+    - rm -fr registry; git clone $REPO_URL registry
+    - DOCKER_REGISTRY=$(cat registry/DOCKER_REGISTRY_DNS)
+    - export IMGVER=$(echo $CI_BUILD_REF_NAME |  sed 's/\//_/g' )
+    - cat registry/password  | docker login -u $(cat registry/user)  --password-stdin ${DOCKER_REGISTRY}
+    - ls apps
+    - docker build -t "${DOCKER_REGISTRY}/touchpoint/microsite-topup:$IMGVER" -f apps/topup/Dockerfile .
+    - docker push "${DOCKER_REGISTRY}/touchpoint/microsite-topup:$IMGVER"
+  only:
+    - /^prod-topup_[0-9]+\.[0-9]+\.[0-9]+$/
+
+deploy_prod:
+  stage: deploy_prod
+  environment: Production
+  tags:
+    - docker-dind
+  image:
+    name: devops-registry.smartfren.com/devops/kubectl:1.27.4
+    entrypoint: ['']
+  script:
+    - BASE_URL=`echo $CI_REPOSITORY_URL | sed "s;\/*$CI_PROJECT_PATH.*;;"`
+    - REPO_URL="$BASE_URL/it-dssm/k8s/kubeconfig/project-production/microsite-revamp.git"
+    - git clone $REPO_URL kubeconfig
+    - mv kubeconfig/sf-microsite-revamp ~/.kube/config
+    - export IMGVER=$(echo $CI_BUILD_REF_NAME |  sed 's/\//_/g' )
+    - KUBE_URL="$BASE_URL/it-dssm/service-configs/kubernetes/touchpoint/microsite-topup.git"
+    - git clone $KUBE_URL kube-prod
+    - sed -i "s/microsite-topup:stable/microsite-topup:$IMGVER/g" "kube-prod/p-microsite-topup-deployment.yml"
+    - kubectl apply -f kube-prod/p-microsite-topup-deployment.yml  -n sf-microsite-revamp
+    - kubectl rollout restart deployments p-microsite-topup -n sf-microsite-revamp
+  when: manual
+  only:
+    - /^prod-topup_[0-9]+\.[0-9]+\.[0-9]+$/
+
+deploy_prod_manifest:
+  stage: deploy_prod
+  environment: Manifest
+  tags:
+    - docker-dind
+  image:
+    name: devops-registry.smartfren.com/devops/kubectl:1.27.4
+    entrypoint: ['']
+  script:
+    - BASE_URL=`echo $CI_REPOSITORY_URL | sed "s;\/*$CI_PROJECT_PATH.*;;"`
+    - REPO_URL="$BASE_URL/it-dssm/k8s/kubeconfig/project-production/microsite-revamp.git"
+    - git clone $REPO_URL kubeconfig
+    - mv kubeconfig/sf-microsite-revamp ~/.kube/config
+    - export IMGVER=$(echo $CI_BUILD_REF_NAME |  sed 's/\//_/g' )
+    - KUBE_URL="$BASE_URL/it-dssm/service-configs/kubernetes/touchpoint/microsite-topup.git"
+    - git clone $KUBE_URL kube-prod
+    - sed -i "s/microsite-topup:stable/microsite-topup:$IMGVER/g" "kube-prod/p-microsite-topup-deployment.yml"
+    - kubectl apply -f kube-prod  -n sf-microsite-revamp
+    - kubectl rollout restart deployments p-microsite-topup -n sf-microsite-revamp
+  when: manual
+  only:
+    - /^prod-topup_[0-9]+\.[0-9]+\.[0-9]+$/
